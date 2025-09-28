@@ -82,14 +82,50 @@ A modern Umbraco CMS application with Docker Compose, SQL Server, and devcontain
 ```
 ├── .devcontainer/              # VS Code dev container configuration
 ├── .github/                    # GitHub Actions workflows & Dependabot
+├── docs/                       # Documentation
 ├── src/UmbracoWeb/            # Main application source
 │   ├── UmbracoWeb/            # Umbraco CMS project
-│   └── Dockerfile             # Production container image
+│   │   ├── Controllers/       # API controllers
+│   │   ├── Services/          # Business logic services
+│   │   ├── Models/           # Data models and DTOs
+│   │   └── Views/Partials/   # Umbraco partial views
+│   ├── UmbracoWeb.Tests/     # Unit and integration tests
+│   └── Dockerfile            # Production container image
 ├── logs/                      # Application logs (gitignored)
 ├── docker-compose.yml         # Multi-service development stack
 ├── .env.example              # Environment variables template
 └── README.md                 # This file
 ```
+
+## 🛡️ Security Components
+
+### PhishLabs Incident Reporter
+
+The application includes a PhishLabs integration for reporting suspicious URLs:
+
+- **Member-friendly UI**: Simple form for reporting phishing links
+- **Server-side proxy**: Secure API integration with PhishLabs
+- **Real-time validation**: Client and server-side input validation
+- **Accessibility**: Full ARIA support and keyboard navigation
+- **Security**: CSRF protection, rate limiting, input sanitization
+
+**Usage in templates:**
+```html
+@Html.Partial("PhishLabsIncidentReporter")
+```
+
+**Configuration required:**
+```json
+{
+  "PhishLabs": {
+    "ApiBaseUrl": "https://api.phishlabs.com",
+    "ApiKey": "your-api-key",
+    "ServicePath": "/incidents/your-service"
+  }
+}
+```
+
+See [PhishLabs Documentation](docs/PhishLabsIncidentReporter.md) for complete setup and usage details.
 
 ## ⚙️ Configuration
 
