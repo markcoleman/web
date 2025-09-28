@@ -1,0 +1,447 @@
+@{
+    var correlationId = Guid.NewGuid().ToString("N")[..12];
+}
+
+<div class="phishlabs-incident-reporter" data-correlation-id="@correlationId">
+    <div class="phishlabs-header">
+        <h3>Report a suspicious link</h3>
+        <p class="phishlabs-description">
+            Paste a link you think is unsafe and our security team will review it. 
+            We'll protect your info and let you know if action is needed.
+        </p>
+    </div>
+
+    <form id="phishlabs-form" class="phishlabs-form" data-correlation-id="@correlationId">
+        @Html.AntiForgeryToken()
+        
+        <div class="form-group">
+            <label for="phishlabs-url" class="form-label">
+                Suspicious URL <span class="required" aria-label="required">*</span>
+            </label>
+            <input 
+                type="url" 
+                id="phishlabs-url" 
+                name="url" 
+                class="form-control" 
+                placeholder="https://example.com/suspicious-link"
+                required
+                aria-describedby="url-help url-error"
+                maxlength="2048"
+            />
+            <div id="url-help" class="form-text">
+                Paste the complete URL starting with http:// or https://
+            </div>
+            <div id="url-error" class="error-message" role="alert" aria-live="polite"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="phishlabs-details" class="form-label">
+                Additional details (optional)
+            </label>
+            <textarea 
+                id="phishlabs-details" 
+                name="details" 
+                class="form-control" 
+                rows="3"
+                placeholder="Optional: Describe how you encountered this link or any additional context..."
+                aria-describedby="details-help details-error"
+                maxlength="1000"
+            ></textarea>
+            <div id="details-help" class="form-text">
+                <span class="char-count">0 / 1000 characters</span>
+            </div>
+            <div id="details-error" class="error-message" role="alert" aria-live="polite"></div>
+        </div>
+
+        <div class="form-actions">
+            <button 
+                type="submit" 
+                class="btn btn-primary phishlabs-submit-btn"
+                aria-describedby="submit-status"
+            >
+                <span class="btn-text">Report Link</span>
+                <span class="btn-spinner" style="display: none;" aria-hidden="true">
+                    <span class="spinner"></span>
+                </span>
+            </button>
+        </div>
+
+        <div id="submit-status" class="submit-status" role="status" aria-live="polite" aria-atomic="true"></div>
+    </form>
+
+    <!-- Success Message Template -->
+    <div id="success-template" style="display: none;">
+        <div class="alert alert-success" role="alert">
+            <h4 class="alert-heading">Report Received</h4>
+            <p>Thanks — we received your report and are investigating. If this affects your account, we'll contact you.</p>
+            <small class="text-muted">Report ID: <span class="correlation-id"></span></small>
+        </div>
+    </div>
+
+    <!-- Error Message Template -->
+    <div id="error-template" style="display: none;">
+        <div class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">Submission Failed</h4>
+            <p class="error-message">Something went wrong — please try again.</p>
+            <button type="button" class="btn btn-outline-danger btn-sm retry-btn">Try Again</button>
+        </div>
+    </div>
+</div>
+
+<style>
+.phishlabs-incident-reporter {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+
+.phishlabs-header h3 {
+    color: #343a40;
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.phishlabs-description {
+    color: #6c757d;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+
+.phishlabs-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.phishlabs-form .form-label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.required {
+    color: #dc3545;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.form-control.is-invalid {
+    border-color: #dc3545;
+}
+
+.form-text {
+    font-size: 0.875rem;
+    color: #6c757d;
+    margin-top: 0.25rem;
+}
+
+.char-count {
+    float: right;
+}
+
+.error-message {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: none;
+}
+
+.error-message.show {
+    display: block;
+}
+
+.form-actions {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background-color: #0056b3;
+}
+
+.btn:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.btn-spinner {
+    margin-left: 0.5rem;
+}
+
+.spinner {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.alert {
+    padding: 1rem;
+    margin-top: 1.5rem;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.alert-heading {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.btn-outline-danger {
+    color: #dc3545;
+    border: 1px solid #dc3545;
+    background: transparent;
+}
+
+.btn-outline-danger:hover {
+    color: white;
+    background-color: #dc3545;
+}
+
+.btn-sm {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+}
+
+@@media (max-width: 576px) {
+    .phishlabs-incident-reporter {
+        padding: 1rem;
+        margin: 0 0.5rem;
+    }
+    
+    .char-count {
+        float: none;
+        display: block;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('phishlabs-form');
+    const urlInput = document.getElementById('phishlabs-url');
+    const detailsInput = document.getElementById('phishlabs-details');
+    const submitBtn = form.querySelector('.phishlabs-submit-btn');
+    const btnText = submitBtn.querySelector('.btn-text');
+    const btnSpinner = submitBtn.querySelector('.btn-spinner');
+    const statusDiv = document.getElementById('submit-status');
+    const charCount = form.querySelector('.char-count');
+    const correlationId = form.dataset.correlationId;
+
+    // Character count for details
+    detailsInput.addEventListener('input', function() {
+        const count = this.value.length;
+        charCount.textContent = `${count} / 1000 characters`;
+        
+        if (count > 1000) {
+            this.value = this.value.substring(0, 1000);
+            charCount.textContent = '1000 / 1000 characters';
+        }
+    });
+
+    // Real-time URL validation
+    urlInput.addEventListener('blur', function() {
+        validateUrl(this.value);
+    });
+
+    // Form submission
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        if (!validateForm()) {
+            return;
+        }
+
+        await submitForm();
+    });
+
+    function validateUrl(url) {
+        const urlError = document.getElementById('url-error');
+        
+        if (!url.trim()) {
+            showError(urlError, 'URL is required');
+            urlInput.classList.add('is-invalid');
+            return false;
+        }
+
+        try {
+            new URL(url);
+            hideError(urlError);
+            urlInput.classList.remove('is-invalid');
+            return true;
+        } catch {
+            showError(urlError, 'Please enter a valid URL');
+            urlInput.classList.add('is-invalid');
+            return false;
+        }
+    }
+
+    function validateForm() {
+        const url = urlInput.value.trim();
+        const details = detailsInput.value.trim();
+        
+        let isValid = true;
+
+        // Validate URL
+        if (!validateUrl(url)) {
+            isValid = false;
+        }
+
+        // Validate details length
+        if (details.length > 1000) {
+            const detailsError = document.getElementById('details-error');
+            showError(detailsError, 'Details cannot exceed 1000 characters');
+            detailsInput.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            const detailsError = document.getElementById('details-error');
+            hideError(detailsError);
+            detailsInput.classList.remove('is-invalid');
+        }
+
+        return isValid;
+    }
+
+    async function submitForm() {
+        setSubmitState(true);
+        clearStatus();
+
+        try {
+            const formData = {
+                url: urlInput.value.trim(),
+                details: detailsInput.value.trim() || null
+            };
+
+            const response = await fetch('/api/phishlabs/incidents', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': form.querySelector('input[name="__RequestVerificationToken"]').value
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                showSuccess(result.message, result.correlationId);
+                form.reset();
+                charCount.textContent = '0 / 1000 characters';
+            } else {
+                showError(statusDiv, result.message || 'Something went wrong — please try again.');
+            }
+
+        } catch (error) {
+            console.error('PhishLabs submission error:', error);
+            showError(statusDiv, 'Something went wrong — please try again. If it keeps failing, contact support.');
+        } finally {
+            setSubmitState(false);
+        }
+    }
+
+    function setSubmitState(isSubmitting) {
+        submitBtn.disabled = isSubmitting;
+        
+        if (isSubmitting) {
+            btnText.textContent = 'Submitting...';
+            btnSpinner.style.display = 'inline-block';
+        } else {
+            btnText.textContent = 'Report Link';
+            btnSpinner.style.display = 'none';
+        }
+    }
+
+    function showSuccess(message, correlationId) {
+        const template = document.getElementById('success-template');
+        const alert = template.cloneNode(true);
+        alert.id = '';
+        alert.style.display = 'block';
+        alert.querySelector('p').textContent = message;
+        alert.querySelector('.correlation-id').textContent = correlationId;
+        
+        statusDiv.innerHTML = '';
+        statusDiv.appendChild(alert);
+        statusDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function showError(element, message) {
+        if (element === statusDiv) {
+            const template = document.getElementById('error-template');
+            const alert = template.cloneNode(true);
+            alert.id = '';
+            alert.style.display = 'block';
+            alert.querySelector('.error-message').textContent = message;
+            
+            // Add retry functionality
+            alert.querySelector('.retry-btn').addEventListener('click', function() {
+                clearStatus();
+            });
+            
+            statusDiv.innerHTML = '';
+            statusDiv.appendChild(alert);
+            statusDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } else {
+            element.textContent = message;
+            element.classList.add('show');
+        }
+    }
+
+    function hideError(element) {
+        element.textContent = '';
+        element.classList.remove('show');
+    }
+
+    function clearStatus() {
+        statusDiv.innerHTML = '';
+    }
+});
+</script>
