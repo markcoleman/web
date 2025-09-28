@@ -3,12 +3,13 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build-env
 WORKDIR /app
 
 # Copy project files and restore dependencies
-COPY UmbracoWeb/*.csproj ./
-RUN dotnet restore
+COPY src/UmbracoWeb/UmbracoWeb/*.csproj ./
+RUN dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org --configfile /usr/share/dotnet/NuGetDefaults.config
+RUN dotnet restore --disable-parallel
 
 # Copy everything else and build
-COPY UmbracoWeb/. ./
-RUN dotnet publish -c Release -o out
+COPY src/UmbracoWeb/UmbracoWeb/. ./
+RUN dotnet publish -c Release -o out --no-restore
 
 # Use the official ASP.NET Core runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:9.0
