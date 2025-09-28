@@ -1,0 +1,53 @@
+# Docker Compose Override Example
+# Copy this file to docker-compose.override.yml and customize as needed
+# This file is automatically loaded by docker-compose and takes precedence over docker-compose.yml
+
+version: '3.8'
+
+services:
+  web:
+    # Override environment variables for local development
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - SA_PASSWORD=YourCustomPassword123!
+      - UMBRACO_GLOBAL_ID=my-local-site
+      - UMBRACO_BACKOFFICE_HOST=localhost:5000
+    # Add volume mounts for development
+    volumes:
+      - ./src/UmbracoWeb/UmbracoWeb:/app/source:ro
+      - ./logs:/app/logs
+    # Override ports if needed
+    ports:
+      - "5000:8080"
+      - "5001:8081"
+
+  mssql:
+    # Override SQL Server password
+    environment:
+      - SA_PASSWORD=YourCustomPassword123!
+    # Uncomment to expose SQL Server on different port
+    # ports:
+    #   - "1434:1433"
+    
+    # Uncomment to add custom initialization scripts
+    # volumes:
+    #   - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+
+# Add additional services for development
+  # adminer:
+  #   image: adminer
+  #   restart: always
+  #   ports:
+  #     - "8080:8080"
+  #   environment:
+  #     - ADMINER_DEFAULT_SERVER=mssql
+  #   networks:
+  #     - umbraco-network
+
+# Override network configuration if needed
+# networks:
+#   umbraco-network:
+#     driver: bridge
+#     ipam:
+#       config:
+#         - subnet: 172.20.0.0/16
