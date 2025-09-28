@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: src/UmbracoWeb/Dockerfile
+    container_name: umbraco-web
+    ports:
+      - "5000:8080"
+      - "5001:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080;https://+:8081
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - CONNECTION_STRING=Server=mssql,1433;Database=UmbracoWeb;User Id=sa;Password=${SA_PASSWORD:-MyStrongPassword123!};TrustServerCertificate=true;MultipleActiveResultSets=true
+      - UMBRACO_GLOBAL_ID=${UMBRACO_GLOBAL_ID:-local-dev-site}
+      - UMBRACO_BACKOFFICE_HOST=${UMBRACO_BACKOFFICE_HOST:-localhost:5000}
+    depends_on:
+      mssql:
+        condition: service_healthy
+    volumes:
+      - ./src/UmbracoWeb/UmbracoWeb/wwwroot:/app/wwwroot
+      - ./logs:/app/logs
+    networks:
+      - umbraco-network
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: umbraco-mssql
+    ports:
+      - "1433:1433"
+    environment:
+      - SA_PASSWORD=${SA_PASSWORD:-MyStrongPassword123!}
+      - ACCEPT_EULA=Y
+      - MSSQL_PID=Developer
+    volumes:
+      - mssql_data:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P $${SA_PASSWORD} -C -Q 'SELECT 1'"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - umbraco-network
+
+volumes:
+  mssql_data:
+    driver: local
+
+networks:
+  umbraco-network:
+    driver: bridge

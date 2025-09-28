@@ -52,3 +52,42 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+# Umbraco specific
+**/App_Data/
+**/umbraco/Data/
+**/wwwroot/umbraco/
+**/umbraco.config
+**/ExamineIndexes/
+**/ClientDependency/
+**/media/
+**/Models/
+Umbraco.Core.dll
+Umbraco.Web.dll
+
+# Environment and secrets
+.env
+.env.local
+.env.production
+*.pfx
+*.p12
+appsettings.Production.json
+appsettings.Staging.json
+
+# Docker
+docker-compose.override.yml
+.docker/
+
+# Logs
+logs/
+*.log
+
+# IDE
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

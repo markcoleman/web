@@ -1,0 +1,78 @@
+{
+  "name": "Umbraco CMS Development",
+  "dockerComposeFile": [
+    "../docker-compose.yml",
+    "docker-compose.devcontainer.yml"
+  ],
+  "service": "web",
+  "workspaceFolder": "/workspaces/web",
+  
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "configureZshAsDefaultShell": true,
+      "installOhMyZsh": true,
+      "upgradePackages": true,
+      "username": "vscode",
+      "userUid": "automatic",
+      "userGid": "automatic"
+    },
+    "ghcr.io/devcontainers/features/dotnet:2": {
+      "version": "9.0",
+      "additionalVersions": "8.0"
+    },
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "lts",
+      "nodeGypDependencies": true,
+      "installYarnUsingApt": true
+    },
+    "ghcr.io/devcontainers/features/git:1": {
+      "ppa": true,
+      "version": "latest"
+    }
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-dotnettools.csharp",
+        "ms-dotnettools.vscode-dotnet-runtime",
+        "ms-vscode.vscode-json",
+        "redhat.vscode-yaml",
+        "ms-azuretools.vscode-docker",
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+        "bradlc.vscode-tailwindcss",
+        "formulahendry.auto-rename-tag",
+        "christian-kohler.path-intellisense",
+        "ms-vscode.powershell"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "dotnet.defaultSolution": "src/UmbracoWeb/UmbracoWeb.sln"
+      }
+    }
+  },
+
+  "forwardPorts": [5000, 5001, 1433],
+  "portsAttributes": {
+    "5000": {
+      "label": "Umbraco HTTP",
+      "onAutoForward": "notify"
+    },
+    "5001": {
+      "label": "Umbraco HTTPS",
+      "onAutoForward": "notify"
+    },
+    "1433": {
+      "label": "SQL Server",
+      "onAutoForward": "silent"
+    }
+  },
+
+  "postCreateCommand": "dotnet restore src/UmbracoWeb/UmbracoWeb/UmbracoWeb.csproj",
+  "postStartCommand": "echo 'Umbraco development environment is ready!'",
+
+  "remoteUser": "vscode",
+  "shutdownAction": "stopCompose"
+}
