@@ -49,23 +49,23 @@ public class PhishLabsIncidentResponse
 }
 
 /// <summary>
-/// Internal model for PhishLabs API request
+/// Internal model for PhishLabs Case Creation API request
 /// </summary>
 internal class PhishLabsApiRequest
 {
-    public string Url { get; set; } = string.Empty;
-    public string? Description { get; set; }
+    public string CaseType { get; set; } = "Phishing";
+    public string Title { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
     public string Source { get; set; } = "umbraco-web";
-    public DateTime Timestamp { get; set; } = DateTime.UtcNow;
 }
 
 /// <summary>
-/// Internal model for PhishLabs API response
+/// Internal model for PhishLabs Case Creation API response
 /// </summary>
 internal class PhishLabsApiResponse
 {
     public bool Success { get; set; }
-    public string? IncidentId { get; set; }
+    public string? CaseId { get; set; }
     public string? Message { get; set; }
     public string? Error { get; set; }
 }

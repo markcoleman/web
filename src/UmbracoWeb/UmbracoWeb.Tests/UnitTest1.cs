@@ -28,9 +28,9 @@ public class PhishLabsServiceTests
         
         _settings = new PhishLabsSettings
         {
-            ApiBaseUrl = "https://api.phishlabs.com",
+            ApiBaseUrl = "https://caseapi.phishlabs.com",
             ApiKey = "test-key",
-            ServicePath = "/incidents/test",
+            ServicePath = "/v1/create",
             TimeoutSeconds = 30,
             MaxRetries = 3,
             RateLimitPerMinute = 10
@@ -61,8 +61,8 @@ public class PhishLabsServiceTests
         var apiResponse = new
         {
             success = true,
-            incidentId = "incident-456",
-            message = "Incident created successfully"
+            caseId = "case-456",
+            message = "Case created successfully"
         };
 
         var responseContent = JsonSerializer.Serialize(apiResponse, new JsonSerializerOptions
