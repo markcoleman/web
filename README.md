@@ -45,12 +45,12 @@ A modern Umbraco CMS application with Docker Compose, SQL Server, and devcontain
 
 2. Start services:
    ```bash
-   docker-compose up -d
+   docker compose up -d
    ```
 
 3. View logs:
    ```bash
-   docker-compose logs -f web
+   docker compose logs -f web
    ```
 
 ### Local Development without Docker
@@ -167,22 +167,22 @@ dotnet run --project src/UmbracoWeb/UmbracoWeb/UmbracoWeb.csproj
 
 ```bash
 # Build and start all services
-docker-compose up -d
+docker compose up -d
 
 # View application logs
-docker-compose logs -f web
+docker compose logs -f web
 
 # View database logs
-docker-compose logs -f mssql
+docker compose logs -f mssql
 
 # Stop all services
-docker-compose down
+docker compose down
 
 # Rebuild services
-docker-compose up -d --build
+docker compose up -d --build
 
 # Clean up volumes (⚠️ deletes database data)
-docker-compose down -v
+docker compose down -v
 ```
 
 ### Database Management
@@ -191,10 +191,10 @@ The SQL Server database persists data in a Docker volume. To reset:
 
 ```bash
 # Stop services and remove volumes
-docker-compose down -v
+docker compose down -v
 
 # Start fresh
-docker-compose up -d
+docker compose up -d
 ```
 
 ## 🚀 Deployment
@@ -284,10 +284,10 @@ Log levels:
 **Database Connection Failed**
 ```bash
 # Check SQL Server container
-docker-compose logs mssql
+docker compose logs mssql
 
 # Verify connection string in logs
-docker-compose logs web | grep "Connection"
+docker compose logs web | grep "Connection"
 ```
 
 **Umbraco Installation Issues**
