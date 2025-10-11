@@ -71,7 +71,7 @@ A modern Umbraco CMS application with Docker Compose, SQL Server, and devcontain
 ## 🏗️ Architecture
 
 ### Stack
-- **CMS**: Umbraco 15.0
+- **CMS**: Umbraco 16.2
 - **Runtime**: .NET 9.0
 - **Database**: Microsoft SQL Server 2022
 - **Logging**: Serilog (Console + File)
