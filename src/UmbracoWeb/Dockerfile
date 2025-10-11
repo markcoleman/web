@@ -4,7 +4,6 @@ WORKDIR /app
 
 # Copy project files and restore dependencies
 COPY src/UmbracoWeb/UmbracoWeb/*.csproj ./
-RUN dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org --configfile /usr/share/dotnet/NuGetDefaults.config
 RUN dotnet restore --disable-parallel
 
 # Copy everything else and build

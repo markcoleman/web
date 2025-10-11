@@ -24,7 +24,7 @@ Thank you for your interest in contributing! This document provides guidelines a
      - Reopen in container when prompted
    - **Option B: Docker Compose**
      ```bash
-     docker-compose up -d
+     docker compose up -d
      ```
    - **Option C: Local Development**
      ```bash
@@ -158,7 +158,7 @@ public void GetContentById_WithValidId_ReturnsContent()
    dotnet test
    
    # Test Docker build
-   docker-compose up -d --build
+   docker compose up -d --build
    ```
 
 2. **Update Documentation**
@@ -233,7 +233,7 @@ What actually happens
 ## Environment
 - OS: [e.g., Windows 11, Ubuntu 20.04]
 - .NET Version: [e.g., 9.0]
-- Umbraco Version: [e.g., 15.0.0]
+- Umbraco Version: [e.g., 16.2.0]
 - Docker Version: [if applicable]
 
 ## Additional Context

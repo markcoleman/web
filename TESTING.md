@@ -30,7 +30,7 @@ dotnet publish --configuration Release --output /tmp/test-publish
 ls -la /tmp/test-publish/
 ```
 
-**✅ Expected Result**: Build succeeds with warnings about security vulnerabilities (these are known Umbraco 15 issues).
+**✅ Expected Result**: Build succeeds without errors.
 
 ### Docker Compose Configuration Testing
 
@@ -244,7 +244,7 @@ hey -n 50 -c 5 -H "Authorization: Bearer <token>" http://localhost:5000/umbraco
 - **.NET Version**: 9.0.x
 - **Docker Version**: 24.0.x
 - **Docker Compose Version**: v2.21.x
-- **Umbraco Version**: 15.0.0
+- **Umbraco Version**: 16.2.0
 - **SQL Server Version**: 2022-latest
 
 ## 🔄 Automated Testing
