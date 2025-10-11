@@ -6,7 +6,7 @@ using UmbracoWeb.Models;
 namespace UmbracoWeb.Services;
 
 /// <summary>
-/// Service for integrating with PhishLabs incident reporting API
+/// Service for integrating with PhishLabs Case Creation API
 /// </summary>
 public class PhishLabsService : IPhishLabsService
 {
@@ -52,20 +52,23 @@ public class PhishLabsService : IPhishLabsService
 
         try
         {
+            var sanitizedUrl = SanitizeUrl(request.Url);
             var apiRequest = new PhishLabsApiRequest
             {
-                Url = SanitizeUrl(request.Url),
-                Description = SanitizeDescription(request.Details),
-                Source = "umbraco-web",
-                Timestamp = DateTime.UtcNow
+                CaseType = "Phishing",
+                Title = $"Suspicious URL: {sanitizedUrl}",
+                Description = string.IsNullOrWhiteSpace(request.Details) 
+                    ? $"Reported URL: {sanitizedUrl}" 
+                    : $"Reported URL: {sanitizedUrl}\n\nDetails: {SanitizeDescription(request.Details)}",
+                Source = "umbraco-web"
             };
 
             var response = await SubmitToPhishLabsAsync(apiRequest, correlationId, cancellationToken);
 
             if (response.Success)
             {
-                _logger.LogInformation("PhishLabs incident submitted successfully. CorrelationId: {CorrelationId}, IncidentId: {IncidentId}", 
-                    correlationId, response.IncidentId);
+                _logger.LogInformation("PhishLabs case created successfully. CorrelationId: {CorrelationId}, CaseId: {CaseId}", 
+                    correlationId, response.CaseId);
 
                 return new PhishLabsIncidentResponse
                 {

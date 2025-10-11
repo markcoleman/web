@@ -28,9 +28,9 @@ Add the PhishLabs settings to your `appsettings.json`:
 ```json
 {
   "PhishLabs": {
-    "ApiBaseUrl": "https://api.phishlabs.com",
+    "ApiBaseUrl": "https://caseapi.phishlabs.com",
     "ApiKey": "your-api-key-here",
-    "ServicePath": "/incidents/your-service",
+    "ServicePath": "/v1/create",
     "TimeoutSeconds": 30,
     "MaxRetries": 3,
     "RateLimitPerMinute": 10
