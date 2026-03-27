@@ -11,7 +11,7 @@ COPY src/UmbracoWeb/UmbracoWeb/. ./
 RUN dotnet publish -c Release -o out --no-restore
 
 # Use the official ASP.NET Core runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:9.0
+FROM mcr.microsoft.com/dotnet/aspnet:10.0
 WORKDIR /app
 
 # Create logs directory
